@@ -6,7 +6,7 @@
 #Version        : .01
 #Author         : Scott
 #Twitter        : @hellor00t
-#Notes                  : Binaries installed to /usr/bin or linked, wordlists or other tools in ~/tools
+#Notes          : Binaries installed to /usr/bin or linked, wordlists or other tools in ~/tools
 ###################################################################
 
 #### Functions
@@ -16,7 +16,7 @@ installBasic() {
         echo "export GOROOT=/usr/lib/go" >> ~/.zshrc
         echo "export GOPATH=$HOME/go" >> ~/.zshrc
         echo "export PATH=$GOPATH/bin:$GOROOT/bin:$PATH" >> ~/.zshrc
-        source .bashrc
+        source ~/.bashrc
         # Install tomnomnom glory
         go get github.com/tomnomnom/waybackurls
         go get go get -u github.com/ffuf/ffuf
@@ -26,6 +26,7 @@ installBasic() {
         go get -u github.com/tomnomnom/gf
         go get -u github.com/tomnomnom/meg
         # Install Ferroxbuster
+        # FERROXBUSTER=$(curl -sL https://api.github.com/repos/epi052/feroxbuster/releases/latest | jq -r ".assets[].browser_download_url" | grep x86_64-linux-feroxbuster.tar.gz)
         wget -q `curl -sL https://api.github.com/repos/epi052/feroxbuster/releases/latest | jq -r ".assets[].browser_download_url" | grep x86_64-linux-feroxbuster.tar.gz`
         tar -xvf x86_64-linux-feroxbuster.tar.gz
         rm x86_64-linux-feroxbuster.tar.gz
@@ -36,7 +37,7 @@ installBasic() {
         go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
 }
 
-installTools() {
+installFull() {
         installBasic
         git clone https://github.com/wallarm/jwt-secrets ~/tools/jwt-secrets
         git clone https://github.com/BBhacKing/jwt_secrets.git ~/tools/jwt_secrets
@@ -57,7 +58,6 @@ updateTools() {
         # Update Git Repos
         # store the current dir
         CUR_DIR=$(pwd)
-        # Let the person running the script know what's going on.
         echo "[+] Pulling in latest changes for all repositories"
         # Find all git repositories and update it to the master latest revision
         for i in $(find . -name ".git" | cut -c 3-); do
@@ -77,18 +77,14 @@ updateTools() {
         done
         nuclei -update
         nuclei -ut
-
         echo "[+] Complete!"
-
 }
 
 mkdir /home/$(logname)/tools
 cd /home/$(logname)/tools
-install=
-update=
 while getopts iu name; do
         case $name in
-        i) install=1 ;;
+        i) full=1 ;;
         u) update=1 ;;
         b) basic=1 ;;
         ?)
@@ -97,9 +93,9 @@ while getopts iu name; do
                 ;;
         esac
 done
-if [ ! -z "$install" ]; then
+if [ ! -z "$full" ]; then
         printf "[+] Installing tools\n"
-        installTools
+        installFull
 fi
 if [ ! -z "$update" ]; then
         printf "[+] Updating Tools\n"

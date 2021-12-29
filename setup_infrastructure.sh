@@ -9,7 +9,7 @@ if [ `id -u` -ne 0 ]
   then echo "[!] Must be run as root!"
   exit
 fi
- 
+
 apt update
 apt install nginx curl certbot python3-certbot-nginx -y
  
@@ -43,3 +43,6 @@ echo "[-] Obtaining Certificate for ${domain}"
 certbot --nginx -d ${domain}
 ufw allow "Nginx HTTPS"
 ufw disable "Nginx HTTP"
+
+echo "[-] Setting up Burp Collab"
+#https://teamrot.fi/self-hosted-burp-collaborator-with-custom-domain/

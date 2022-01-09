@@ -12,7 +12,7 @@
 #### Functions
 
 installBasic() {
-        sudo apt install -y golang jq
+        sudo apt install -y golang jq fzf bat
         echo "export GOROOT=/usr/lib/go" >> ~/.zshrc
         echo "export GOPATH=$HOME/go" >> ~/.zshrc
         echo "export PATH=$GOPATH/bin:$GOROOT/bin:$PATH" >> ~/.zshrc
@@ -35,6 +35,7 @@ installBasic() {
         # Clone SecLists
         git clone https://github.com/danielmiessler/SecLists ~/tools/SecLists
         go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
+        npm install -g fx
 }
 
 installFull() {
@@ -45,6 +46,7 @@ installFull() {
         GO111MODULE=on go get -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei
         nuclei -ut
         https://github.com/geeknik/the-nuclei-templates ~/nuclei-templates/the-nuclei-templates
+        
 }
 
 updateTools() {

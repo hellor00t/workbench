@@ -1,7 +1,16 @@
 #!/bin/bash
+
+###################################################################
+#Script Name    : setup_infrastructure.sh
+#Description    : setup offsec relay/pivot point
+#Version        : .01
+#Author         : Scott
+#Twitter        : @hellor00t
+#Notes          : Don't change port
+###################################################################
  
 serverIP=`curl -s -4 icanhazip.com`
-domain="21551.bf.run"
+domain="<fqdn>" #change this
 port="80"
 OS=`lsb_release -i | awk '{print $3}' | tail -n 1`
  
